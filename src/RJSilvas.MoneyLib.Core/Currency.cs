@@ -10,6 +10,7 @@ namespace RJSilvas.MoneyLib.Core
     {
         BRL = 0,
         USD = 1,
-        BTC = 2,
+        EUR = 2,
+        BTC = 3,
     }
 }

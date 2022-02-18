@@ -59,13 +59,14 @@ namespace RJSilvas.MoneyLib.Tests
         {
             // Arrange
             Money a = Money.Create(1, Currency.USD, 0.01m, new CultureInfo("en-US"));
+            Money b = null;
             string expectedMessage = "Money cannot be null";
             string actualMessage = string.Empty;
 
             // Act
             try
             {
-                var result = a + null;
+                var result = a + b;
                 Assert.True(false);
             }
             catch (MoneyNullException ex)

@@ -33,19 +33,21 @@ namespace RJSilvas.MoneyLib.Core
         {
             var decimalPlaces = (int)(-Math.Log10(decimal.ToDouble(Math.Abs(smallestAmount))));
             var roundedAmount = Math.Round(amount, decimalPlaces, rounding);
-            return new Money(roundedAmount, currency, smallestAmount, decimalPlaces, cultureInfo);
+            return new Money(roundedAmount, currency, smallestAmount, decimalPlaces, cultureInfo, rounding);
         }
 
         private readonly CultureInfo cultureInfo;
+        private readonly MidpointRounding rounding;
 
         private Money(decimal amount, Currency currency, decimal smallestAmount,
-                      int decimalPlaces, CultureInfo cultureInfo)
+                      int decimalPlaces, CultureInfo cultureInfo, MidpointRounding rounding)
         {
             Amount = amount;
             Currency = currency;
             SmallestAmount = smallestAmount;            
             DecimalPlaces = decimalPlaces;
             this.cultureInfo = cultureInfo;
+            this.rounding = rounding;
         }
 
         public decimal Amount { get; }
@@ -77,7 +79,8 @@ namespace RJSilvas.MoneyLib.Core
 
             return new Money(amount1.Amount + amount2.Amount,
                 amount1.Currency, amount1.SmallestAmount,
-                amount1.DecimalPlaces, amount1.cultureInfo);
+                amount1.DecimalPlaces, amount1.cultureInfo, 
+                amount1.rounding);
         }
 
         public static Money operator -(Money amount1, Money amount2)
@@ -89,21 +92,54 @@ namespace RJSilvas.MoneyLib.Core
         {
             return new Money(-amount.Amount,
                 amount.Currency, amount.SmallestAmount,
-                amount.DecimalPlaces, amount.cultureInfo);
+                amount.DecimalPlaces, amount.cultureInfo, 
+                amount.rounding);
         }
 
         public static Money operator *(decimal scalar, Money amount)
         {
             return new Money(scalar * amount.Amount,
                 amount.Currency, amount.SmallestAmount,
-                amount.DecimalPlaces, amount.cultureInfo);
+                amount.DecimalPlaces, amount.cultureInfo, 
+                amount.rounding);
         }
 
         public static Money operator *(Money amount, decimal scalar)
         {
             return new Money(scalar * amount.Amount,
                 amount.Currency, amount.SmallestAmount,
-                amount.DecimalPlaces, amount.cultureInfo);
+                amount.DecimalPlaces, amount.cultureInfo, 
+                amount.rounding);
+        }
+
+        public static Money operator *(Money money, Percent percentage)
+        {
+            return new Money(Math.Round(money.Amount * percentage.FractionalValue,
+                                        money.DecimalPlaces, MidpointRounding.ToZero),
+                money.Currency, money.SmallestAmount,
+                money.DecimalPlaces, money.cultureInfo, 
+                money.rounding);
+        }
+
+        public static Money operator +(Money money, Percent percentage)
+        {
+            return new Money((money + (money * percentage)).Amount,
+                money.Currency, money.SmallestAmount,
+                money.DecimalPlaces, money.cultureInfo,
+                money.rounding);
+        }
+
+        public static Money operator -(Money money, Percent percentage)
+        {
+            return new Money((money - (money * percentage)).Amount,
+                money.Currency, money.SmallestAmount,
+                money.DecimalPlaces, money.cultureInfo,
+                money.rounding);
+        }
+
+        public static Percent operator /(Money money1, Money money2)
+        {
+            return Percent.FromFraction(money1.Amount / money2.Amount);
         }
 
         public override int GetHashCode()

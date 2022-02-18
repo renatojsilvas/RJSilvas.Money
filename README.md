@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/renatojsilvas/RJSilvas.Money/branch/master/graph/badge.svg?token=Oj3jIL6EgU)](https://codecov.io/gh/renatojsilvas/RJSilvas.Money)
+
 # RJSilvas.Money
 Library that encapsulates the money information
 

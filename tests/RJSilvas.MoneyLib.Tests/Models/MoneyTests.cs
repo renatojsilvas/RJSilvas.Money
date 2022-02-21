@@ -19,8 +19,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void AddOperator_ShouldAddTwoAmountOfMoney(decimal amount1, decimal amount2, decimal expectedAmount)
         {
             // Arrange
-            Money a = Money.Create(amount1, Currency.USD, 0.01m, new CultureInfo("en-US"));
-            Money b = Money.Create(amount2, Currency.USD, 0.01m, new CultureInfo("en-US"));
+            Money a = Money.Create(amount1, Currency.USD);
+            Money b = Money.Create(amount2, Currency.USD);
 
             // Act
             var result = a + b;
@@ -34,7 +34,7 @@ namespace RJSilvas.MoneyLib.Tests
         public void AddOperator_ShouldThrownAnException_WhenFirstValueIsNull()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.USD, 0.01m, new CultureInfo("en-US"));
+            Money a = Money.Create(1, Currency.USD);
             string expectedMessage = "Money cannot be null";
             string actualMessage = string.Empty;
 
@@ -58,7 +58,7 @@ namespace RJSilvas.MoneyLib.Tests
         public void AddOperator_ShouldThrownAnException_WhenSecondValueIsNull()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.USD, 0.01m, new CultureInfo("en-US"));
+            Money a = Money.Create(1, Currency.USD);
             Money b = null;
             string expectedMessage = "Money cannot be null";
             string actualMessage = string.Empty;
@@ -83,8 +83,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void AddOperator_ShouldThrownAnException_WhenCurrenciesAreDifferent()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.USD, 0.01m, new CultureInfo("en-US"));
-            Money b = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(1, Currency.USD);
+            Money b = Money.Create(1, Currency.BRL);
             string expectedMessage = "Cannot perform operation between USD and BRL";
             string actualMessage = string.Empty;
 
@@ -111,8 +111,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void SubtractOperator_ShouldAddTwoAmountOfReais(decimal amount1, decimal amount2, decimal expectedAmount)
         {
             // Arrange
-            Money a = Money.Create(amount1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
-            Money b = Money.Create(amount2, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(amount1, Currency.BRL);
+            Money b = Money.Create(amount2, Currency.BRL);
 
             // Act
             var result = a - b;
@@ -128,7 +128,7 @@ namespace RJSilvas.MoneyLib.Tests
         public void MinusOperator_ShouldNegateAmount(decimal amount)
         {
             // Arrange
-            Money a = Money.Create(amount, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(amount, Currency.BRL);
 
             // Act
             var result = -a;
@@ -142,7 +142,7 @@ namespace RJSilvas.MoneyLib.Tests
         public void SubtractOperator_ShouldThrownAnException_WhenFirstValueIsNull()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.USD, 0.01m, new CultureInfo("en-US"));
+            Money a = Money.Create(1, Currency.USD);
             string expectedMessage = "Money cannot be null";
             string actualMessage = string.Empty;
 
@@ -166,8 +166,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void SubtractOperator_ShouldThrownAnException_WhenCurrenciesAreDifferent()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.USD, 0.01m, new CultureInfo("en-US"));
-            Money b = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(1, Currency.USD);
+            Money b = Money.Create(1, Currency.BRL);
             string expectedMessage = "Cannot perform operation between USD and BRL";
             string actualMessage = string.Empty;
 
@@ -191,8 +191,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void EqualOperator_ShouldReturnTrue_WhenTwoReaisAreEqual()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
-            Money b = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(1, Currency.BRL);
+            Money b = Money.Create(1, Currency.BRL);
 
             // Act
             var result = a == b;
@@ -205,8 +205,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void EqualOperator_ShouldReturnFalse_WhenTwoCurrenciesAreNotEqual()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
-            Money b = Money.Create(1, Currency.USD, 0.01m, new CultureInfo("en-US"));
+            Money a = Money.Create(1, Currency.BRL);
+            Money b = Money.Create(1, Currency.USD);
 
             // Act
             var result = a == b;
@@ -219,8 +219,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void EqualOperator_ShouldReturnFalse_WhenTwoReaisAreNotEqual()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
-            Money b = Money.Create(2, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(1, Currency.BRL);
+            Money b = Money.Create(2, Currency.BRL);
 
             // Act
             var result = a == b;
@@ -233,8 +233,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void InequalOperator_ShouldReturnTrue_WhenTwoReaisAreNotEqual()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
-            Money b = Money.Create(2, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(1, Currency.BRL);
+            Money b = Money.Create(2, Currency.BRL);
 
             // Act
             var result = a != b;
@@ -247,8 +247,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void InequalOperator_ShouldReturnTrue_WhenCurrenciesAreNotEqual()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
-            Money b = Money.Create(1, Currency.USD, 0.01m, new CultureInfo("en-US"));
+            Money a = Money.Create(1, Currency.BRL);
+            Money b = Money.Create(1, Currency.USD);
 
             // Act
             var result = a != b;
@@ -261,8 +261,8 @@ namespace RJSilvas.MoneyLib.Tests
         public void InequalOperator_ShouldReturnFalse_WhenTwoReaisAreEqual()
         {
             // Arrange
-            Money a = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
-            Money b = Money.Create(1, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(1, Currency.BRL);
+            Money b = Money.Create(1, Currency.BRL);
 
             // Act
             var result = a != b;
@@ -281,7 +281,7 @@ namespace RJSilvas.MoneyLib.Tests
         public void MultiplyOperator_ShouldMultiplyAScalarWithAMoney(decimal scalar, decimal amount, decimal expectedAmount)
         {
             // Arrange
-            Money a = Money.Create(amount, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(amount, Currency.BRL);
 
             // Act
             var result = scalar * a;
@@ -301,7 +301,7 @@ namespace RJSilvas.MoneyLib.Tests
         public void MultiplyOperator_ShouldMultiplyAMoneyWithScalar(decimal scalar, decimal amount, decimal expectedAmount)
         {
             // Arrange
-            Money a = Money.Create(amount, Currency.BRL, 0.01m, new CultureInfo("pt-BR"));
+            Money a = Money.Create(amount, Currency.BRL);
 
             // Act
             var result = a * scalar;

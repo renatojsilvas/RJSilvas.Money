@@ -16,9 +16,7 @@ namespace RJSilvas.MoneyLib.Core
             return Create(amount, Currency.USD, 0.01m, new CultureInfo("en-US"));
         }
 
-        public static Money Euros(decimal amount)
-        {
-            return Create(amount, Currency.EUR, 0.01m, new CultureInfo("fr-FR"));
+            return Create(amount, Currency.USD);
         }
 
         public static Money Bitcoins(decimal amount)

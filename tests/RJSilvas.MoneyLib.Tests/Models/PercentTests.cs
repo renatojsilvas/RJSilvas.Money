@@ -146,5 +146,117 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             one_percent.Should().Be(expected);
         }
+
+        [Fact]
+        public void EqualOperator_ShouldReturnTrue_WhenTwoCurrenciesAreEqual()
+        {
+            // Arrange
+            var one_percent_1 = Percent.FromValue(1);
+            var one_percent_2 = Percent.FromValue(1);
+
+            // Act
+            var result = one_percent_1 == one_percent_2;
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Equals_ShouldReturnTrue_WhenTwoCurrenciesAreEqual()
+        {
+            // Arrange
+            var one_percent_1 = Percent.FromValue(1);
+            var one_percent_2 = Percent.FromValue(1);
+
+            // Act
+            var result = one_percent_1.Equals(one_percent_2);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Equals_ShouldReturnFalse_WhenComparingTwoDifferentObjects()
+        {
+            // Arrange
+            var one_percent_1 = Percent.FromValue(1);
+            var one_reais = Money.Reais(1);
+
+            // Act
+            var result = one_percent_1.Equals(one_reais);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void EqualOperator_ShouldReturnFalse_WhenTwoCurrenciesAreNotEqual()
+        {
+            // Arrange
+            var one_percent_1 = Percent.FromValue(1);
+            var one_percent_2 = Percent.FromValue(2);
+
+            // Act
+            var result = one_percent_1 == one_percent_2;
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void DifferentOperator_ShouldReturnFalse_WhenTwoCurrenciesAreEqual()
+        {
+            // Arrange
+            var one_percent_1 = Percent.FromValue(1);
+            var one_percent_2 = Percent.FromValue(1);
+
+            // Act
+            var result = one_percent_1 != one_percent_2;
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void DifferentOperator_ShouldReturnTrue_WhenTwoCurrenciesAreNotEqual()
+        {
+            // Arrange
+            var one_percent_1 = Percent.FromValue(1);
+            var one_percent_2 = Percent.FromValue(2);
+
+            // Act
+            var result = one_percent_1 != one_percent_2;
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void GetHashCode_ShouldReturnTrue_WhenTwoCurrenciesAreEqual()
+        {
+            // Arrange
+            var one_percent_1 = Percent.FromValue(1);
+            var one_percent_2 = Percent.FromValue(1);
+
+            // Act
+            
+
+            // Assert
+            one_percent_1.GetHashCode().Should().Be(one_percent_2.GetHashCode());
+        }
+
+        [Fact]
+        public void GetHashCode_ShouldReturnFalse_WhenTwoCurrenciesAreNotEqual()
+        {
+            // Arrange
+            var one_percent_1 = Percent.FromValue(1);
+            var one_percent_2 = Percent.FromValue(2);
+
+            // Act
+
+
+            // Assert
+            one_percent_1.GetHashCode().Should().NotBe(one_percent_2.GetHashCode());
+        }
     }
 }

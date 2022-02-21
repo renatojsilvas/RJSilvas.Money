@@ -61,31 +61,13 @@ namespace RJSilvas.MoneyLib.Core
         public override bool Equals(object obj)
         {
             return obj is Currency currency &&
-                   EqualityComparer<RegionInfo>.Default.Equals(regionInfo, currency.regionInfo) &&
-                   IsActive == currency.IsActive &&
-                   IsOfficialIso4217 == currency.IsOfficialIso4217 &&
-                   Code == currency.Code &&
-                   Number == currency.Number &&
-                   Decimals == currency.Decimals &&
-                   Name == currency.Name &&
-                   Symbol == currency.Symbol &&
-                   SmallestValue == currency.SmallestValue &&
-                   EqualityComparer<CultureInfo>.Default.Equals(CultureInfo, currency.CultureInfo);
+                   Code == currency.Code;
         }
 
         public override int GetHashCode()
         {
             HashCode hash = new HashCode();
-            hash.Add(regionInfo);
-            hash.Add(IsActive);
-            hash.Add(IsOfficialIso4217);
             hash.Add(Code);
-            hash.Add(Number);
-            hash.Add(Decimals);
-            hash.Add(Name);
-            hash.Add(Symbol);
-            hash.Add(SmallestValue);
-            hash.Add(CultureInfo);
             return hash.ToHashCode();
         }
 

@@ -49,9 +49,7 @@ namespace RJSilvas.MoneyLib.Core
         {
             return obj is Money money &&
                    Amount == money.Amount &&
-                   Currency == money.Currency &&
-                   DecimalPlaces == money.DecimalPlaces &&
-                   SmallestAmount == money.SmallestAmount;
+                   Currency == money.Currency;
         }
 
         public static Money operator+(Money amount1, Money amount2)
@@ -122,7 +120,7 @@ namespace RJSilvas.MoneyLib.Core
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Amount, Currency, DecimalPlaces, SmallestAmount);
+            return HashCode.Combine(Amount, Currency, DecimalPlaces);
         }
 
         public static bool operator ==(Money left, Money right)

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RJSilvas.MoneyLib.Core
 {
@@ -17,6 +13,6 @@ namespace RJSilvas.MoneyLib.Core
             this.amount2 = amount2;
         }
 
-        public override string Message => $"Cannot perform operation between {amount1.Currency} and {amount2.Currency}";
+        public override string Message => $"Cannot perform operation between {amount1.Currency.Code} and {amount2.Currency.Code}";
     }
 }

@@ -5,21 +5,43 @@ namespace RJSilvas.MoneyLib.Core
 {
     public partial class Money
     {
+        /// <summary>
+        /// Create a BRL instance
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public static Money Reais(decimal amount)
         {
             return Create(amount, Currency.BRL);
         }
 
+        /// <summary>
+        /// Create a USD instance
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public static Money Dollars(decimal amount)
         {
             return Create(amount, Currency.USD);
         }
 
+        /// <summary>
+        /// Create a BTC instance
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public static Money Bitcoins(decimal amount)
         {
             return Create(amount, Currency.BTC);
         }
 
+        /// <summary>
+        /// Create a Money instance with a amount, currency and optionally the rounding method 
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="currency"></param>
+        /// <param name="rounding"></param>
+        /// <returns></returns>
         public static Money Create(decimal amount, Currency currency, MidpointRounding rounding = MidpointRounding.AwayFromZero)
         {
             var roundedAmount = Math.Round(amount, currency.Decimals, rounding);
@@ -35,11 +57,30 @@ namespace RJSilvas.MoneyLib.Core
             this.rounding = rounding;
         }
 
+        /// <summary>
+        /// Amount of money
+        /// </summary>
         public decimal Amount { get; }
+
+        /// <summary>
+        /// Currency of money
+        /// </summary>
         public Currency Currency { get; }
+
+        /// <summary>
+        /// Number of decimal places
+        /// </summary>
         public int DecimalPlaces => Currency.Decimals;
+
+        /// <summary>
+        /// The smallest amount of a given currency. In case of USD the smallest amount is cents ($0.01)
+        /// </summary>
         public decimal SmallestAmount => Currency.SmallestValue;
 
+        /// <summary>
+        /// Money representations as string, with symbol and correct number of decimal places
+        /// </summary>
+        /// <returns>Money as string</returns>
         public override string ToString()
         {
             return Amount.ToString($"C{DecimalPlaces}", Currency.CultureInfo);
@@ -52,6 +93,12 @@ namespace RJSilvas.MoneyLib.Core
                    Currency == money.Currency;
         }
 
+        /// <summary>
+        /// Sum two moneys with the same currency.
+        /// </summary>
+        /// <param name="amount1"></param>
+        /// <param name="amount2"></param>
+        /// <returns>The sum of two moneys</returns>
         public static Money operator+(Money amount1, Money amount2)
         {
             if (amount1 is null || amount2 is null)
@@ -65,11 +112,22 @@ namespace RJSilvas.MoneyLib.Core
                 amount1.rounding);
         }
 
+        /// <summary>
+        /// Subtract two moneys with the same currency.
+        /// </summary>
+        /// <param name="amount1"></param>
+        /// <param name="amount2"></param>
+        /// <returns>The subtraction of two moneys</returns>
         public static Money operator -(Money amount1, Money amount2)
         {
             return amount1 + (-amount2);
         }
 
+        /// <summary>
+        /// Negate a money
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns>Money negated</returns>
         public static Money operator -(Money amount)
         {
             return new Money(-amount.Amount,
@@ -77,6 +135,12 @@ namespace RJSilvas.MoneyLib.Core
                 amount.rounding);
         }
 
+        /// <summary>
+        /// Multiply a Money by a scalar
+        /// </summary>
+        /// <param name="scalar"></param>
+        /// <param name="amount"></param>
+        /// <returns>Money multiplied by a scalar</returns>
         public static Money operator *(decimal scalar, Money amount)
         {
             return new Money(scalar * amount.Amount,
@@ -84,6 +148,12 @@ namespace RJSilvas.MoneyLib.Core
                 amount.rounding);
         }
 
+        /// <summary>
+        /// Multiply a Money by a scalar
+        /// </summary>
+        /// <param name="scalar"></param>
+        /// <param name="amount"></param>
+        /// <returns>Money multiplied by a scalar</returns>
         public static Money operator *(Money amount, decimal scalar)
         {
             return new Money(scalar * amount.Amount,
@@ -91,6 +161,12 @@ namespace RJSilvas.MoneyLib.Core
                 amount.rounding);
         }
 
+        /// <summary>
+        /// Calculate a percentage of money
+        /// </summary>
+        /// <param name="money"></param>
+        /// <param name="percentage"></param>
+        /// <returns>Precentage of money</returns>
         public static Money operator *(Money money, Percent percentage)
         {
             return new Money(Math.Round(money.Amount * percentage.FractionalValue,
@@ -99,6 +175,12 @@ namespace RJSilvas.MoneyLib.Core
                 money.rounding);
         }
 
+        /// <summary>
+        /// Add a percentage to a money
+        /// </summary>
+        /// <param name="money"></param>
+        /// <param name="percentage"></param>
+        /// <returns>Money added by a percentage</returns>
         public static Money operator +(Money money, Percent percentage)
         {
             return new Money((money + (money * percentage)).Amount,
@@ -106,6 +188,12 @@ namespace RJSilvas.MoneyLib.Core
                 money.rounding);
         }
 
+        /// <summary>
+        /// Subtract a percentage from money
+        /// </summary>
+        /// <param name="money"></param>
+        /// <param name="percentage"></param>
+        /// <returns>Money subtracted by a percentage</returns>
         public static Money operator -(Money money, Percent percentage)
         {
             return new Money((money - (money * percentage)).Amount,
@@ -113,6 +201,12 @@ namespace RJSilvas.MoneyLib.Core
                 money.rounding);
         }
 
+        /// <summary>
+        /// Calculate the ratio in percent of two moneys
+        /// </summary>
+        /// <param name="money1"></param>
+        /// <param name="money2"></param>
+        /// <returns>The ratio in percent</returns>
         public static Percent operator /(Money money1, Money money2)
         {
             return Percent.FromFraction(money1.Amount / money2.Amount);

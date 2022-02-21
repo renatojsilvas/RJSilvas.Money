@@ -25,11 +25,7 @@ namespace RJSilvas.MoneyLib.Core
             return obj is Percent percent &&
                    Percentage == percent.Percentage;
         }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Percentage);
-        }        
+        
 
         public decimal Percentage { get; }
         public decimal FractionalValue => Percentage / 100;
@@ -52,6 +48,11 @@ namespace RJSilvas.MoneyLib.Core
         public string ToString(int decimalPlaces)
         {
             return Percentage.ToString($"F{decimalPlaces}") + " %";
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Percentage, FractionalValue);
         }
     }
 }

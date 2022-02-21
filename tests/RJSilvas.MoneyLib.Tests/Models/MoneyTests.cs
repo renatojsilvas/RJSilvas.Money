@@ -310,5 +310,33 @@ namespace RJSilvas.MoneyLib.Tests
             result.Amount.Should().Be(expectedAmount);
             result.Currency.Should().Be(Currency.BRL);
         }
+
+        [Fact]
+        public void GetHashCode_ShouldReturnTrue_WhenTwoMoneysAreEqual()
+        {
+            // Arrange
+            var one_reais_1 = Money.Create(1, Currency.BRL);
+            var one_reais_2 = Money.Create(1, Currency.BRL);
+
+            // Act
+
+
+            // Assert
+            one_reais_1.GetHashCode().Should().Be(one_reais_2.GetHashCode());
+        }
+
+        [Fact]
+        public void GetHashCode_ShouldReturnFalse_WhenTwoMoneysAreNotEqual()
+        {
+            // Arrange
+            var one_reais_1 = Money.Create(1, Currency.BRL);
+            var one_reais_2 = Money.Create(2, Currency.BRL);
+
+            // Act
+
+
+            // Assert
+            one_reais_1.GetHashCode().Should().NotBe(one_reais_2.GetHashCode());
+        }
     }
 }

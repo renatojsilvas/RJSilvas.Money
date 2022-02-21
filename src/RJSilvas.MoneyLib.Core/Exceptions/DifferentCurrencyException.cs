@@ -2,6 +2,9 @@
 
 namespace RJSilvas.MoneyLib.Core
 {
+    /// <summary>
+    /// Excpetion raised when two currencies are different
+    /// </summary>
     public class DifferentCurrencyException : Exception
     {
         private Money amount1;

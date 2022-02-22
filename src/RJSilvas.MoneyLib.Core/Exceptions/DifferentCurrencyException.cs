@@ -7,8 +7,8 @@ namespace RJSilvas.MoneyLib.Core
     /// </summary>
     public class DifferentCurrencyException : Exception
     {
-        private Money amount1;
-        private Money amount2;
+        private readonly Money amount1;
+        private readonly Money amount2;
 
         public DifferentCurrencyException(Money amount1, Money amount2)
         {

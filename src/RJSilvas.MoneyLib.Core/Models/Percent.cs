@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RJSilvas.MoneyLib.Core
 {
@@ -58,6 +59,50 @@ namespace RJSilvas.MoneyLib.Core
         }
 
         /// <summary>
+        /// Multiply a percent by scalar
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="scalar"></param>
+        /// <returns>Percent multiplied by scalar</returns>
+        public static Percent operator *(Percent value, decimal scalar)
+        {
+            return FromValue(value.Percentage * scalar);
+        }
+
+        /// <summary>
+        /// Multiply a percent by scalar
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="scalar"></param>
+        /// <returns>Percent multiplied by scalar</returns>
+        public static Percent operator *(decimal scalar, Percent value)
+        {
+            return FromValue(value.Percentage * scalar);
+        }
+
+        /// <summary>
+        /// Subtract two Percent values
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <returns>The subtract of two percents</returns>
+        public static Percent operator-(Percent value1, Percent value2)
+        {
+            return FromValue(value1.Percentage - value2.Percentage);
+        }
+
+        /// <summary>
+        /// Sum two Percent values
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <returns>The sum of two percents</returns>
+        public static Percent operator +(Percent value1, Percent value2)
+        {
+            return FromValue(value1.Percentage + value2.Percentage);
+        }
+
+        /// <summary>
         /// Returns percentage as string with 5 decimal places. The decimal separator depending on current culture.
         /// When 100% and culture is pt-BR, returns 100,00000 %
         /// </summary>
@@ -81,6 +126,28 @@ namespace RJSilvas.MoneyLib.Core
         public override int GetHashCode()
         {
             return HashCode.Combine(Percentage, FractionalValue);
+        }
+
+        /// <summary>
+        /// Return a list of percentages. Each element is approximatelly the initial value equally divided in equal parts.
+        /// Because of the rounding, the residual is added to last value in order to correct it.
+        /// </summary>
+        /// <param name="parts"></param>
+        /// <returns></returns>
+        public IList<Percent> DivideBy(int parts)
+        {
+            var partEquallyDivided = FromValue(Percentage / parts);
+            var residual = FromValue(100) - parts * partEquallyDivided;
+
+            List<Percent> result = new();
+            for (int i = 0; i < parts; i++)
+            {
+                result.Add(partEquallyDivided);
+                if (i == parts - 1)
+                    result[i] += residual;
+            }
+
+            return result;
         }
     }
 }

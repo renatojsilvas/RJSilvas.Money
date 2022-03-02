@@ -6,6 +6,8 @@ namespace RJSilvas.MoneyLib.Core
 {
     public class Percent
     {
+        private const int DECIMALS = 5;
+
         /// <summary>
         /// Create a percent instance from the percent value, i.e. 100 for 100%. The amountOfPercentage input value
         /// is rounded with 5 decimal places
@@ -14,7 +16,7 @@ namespace RJSilvas.MoneyLib.Core
         /// <returns>Percent Instance</returns>       
         public static Percent FromValue(decimal amountOfPercentage)
         {
-            return new Percent(Math.Round(amountOfPercentage, 5, MidpointRounding.AwayFromZero));
+            return new Percent(Math.Round(amountOfPercentage, DECIMALS, MidpointRounding.AwayFromZero));
         }
 
         /// <summary>
@@ -134,9 +136,10 @@ namespace RJSilvas.MoneyLib.Core
         /// </summary>
         /// <param name="parts"></param>
         /// <returns></returns>
-        public IList<Percent> DivideBy(int parts)
+        public IList<Percent> DivideBy(int parts, int decimals = DECIMALS)
         {
-            var partEquallyDivided = FromValue(Percentage / parts);
+            var partEquallyDivided = FromValue(Math.Round(Percentage / parts, 
+                decimals, MidpointRounding.AwayFromZero));
             var residual = FromValue(100) - parts * partEquallyDivided;
 
             List<Percent> result = new();

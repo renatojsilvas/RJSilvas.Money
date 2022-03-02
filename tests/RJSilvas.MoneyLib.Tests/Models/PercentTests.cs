@@ -370,5 +370,23 @@ namespace RJSilvas.MoneyLib.Tests
 
             result.Sum(r => r.Percentage).Should().Be(100.0m);
         }
+
+        [Fact]
+        public void Divide_ShouldReturnThree33_33percent_WhenDivideOneHundredPercentBy3With2decimals()
+        {
+            // Arrange
+            var one_hundred_percent = Percent.FromValue(100);
+
+            // Act
+            var result = one_hundred_percent.DivideBy(3, 2);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result[0].Should().Be(Percent.FromValue(33.33m));
+            result[1].Should().Be(Percent.FromValue(33.33m));
+            result[2].Should().Be(Percent.FromValue(33.34m));
+
+            result.Sum(r => r.Percentage).Should().Be(100.0m);
+        }
     }
 }

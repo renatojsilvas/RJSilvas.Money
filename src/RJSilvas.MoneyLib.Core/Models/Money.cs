@@ -241,12 +241,13 @@ namespace RJSilvas.MoneyLib.Core
         }
 
         /// <summary>
-        /// Allocate money in parts equally distributed. When it is impossible,
-        /// the residual is addedto the last element.
+        /// Allocate money in parts equally distributed. By default,
+        /// the residual is added to the last element.
         /// </summary>
         /// <param name="parts"></param>
+        /// <param name="correctInTheLast"></param>
         /// <returns>A list od Moneys equally distributed</returns>
-        public IList<Money> Allocate(int parts)
+        public IList<Money> Allocate(int parts, bool correctInTheLast = true)
         {
             if (parts < 1)
                throw new AllocateMoneyException(parts);
@@ -258,18 +259,31 @@ namespace RJSilvas.MoneyLib.Core
             for (int i = 0; i < parts; i++)
             {
                 result.Add(partEquallyDivided);
-                if (i == parts - 1)
+                if (!correctInTheLast && i == 0 || 
+                    correctInTheLast && i == parts - 1)
                     result[i] += residual;
             }
 
             return result;
         }
 
-        public IList<Money> Allocate(IList<Percent> listOfPercentage)
+
+        /// <summary>
+        /// Allocate money proportionally by a list of percentages. By default,
+        /// the residual is added to the last.
+        /// </summary>
+        /// <param name="listOfPercentage"></param>
+        /// <param name="correctInTheLast"></param>
+        /// <returns></returns>
+        public IList<Money> Allocate(IList<Percent> listOfPercentage, bool correctInTheLast = true)
         {
             var sum = Percent.FromValue(listOfPercentage.Sum(p => p.Percentage));
             var residual = Percent.FromValue(100) - sum;
-            listOfPercentage[listOfPercentage.Count - 1] += residual;
+
+            if (correctInTheLast)
+                listOfPercentage[listOfPercentage.Count - 1] += residual;
+            else
+                listOfPercentage[0] += residual;
 
             return listOfPercentage.Select(p => this * p).ToList();
         }

@@ -352,6 +352,8 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             result.Should().HaveCount(1);
             result.Should().BeEquivalentTo(expected);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
         }
 
         [Fact]
@@ -367,10 +369,12 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             result.Should().HaveCount(2);
             result.Should().BeEquivalentTo(expected);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
         }
 
         [Fact]
-        public void Allocate_ShouldDivide100BRLInNPartsCorrectingInTheLast_WhenNIsEqual3()
+        public void Allocate_ShouldDivide100BRLInNPartsCorrectingInTheLastByDefault_WhenNIsEqual3()
         {
             // Arrange
             var _100BRL = Money.Create(100, Currency.BRL);
@@ -382,6 +386,25 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             result.Should().HaveCount(3);
             result.Should().BeEquivalentTo(expected);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
+        }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInNPartsCorrectingInTheFirst_WhenNIsEqual3()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var expected = new List<Money>() { Money.Create(33.34m, Currency.BRL), Money.Create(33.33m, Currency.BRL), Money.Create(33.33m, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(3, false);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result[0].Should().BeEquivalentTo(expected[0]);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
         }
 
         [Fact]
@@ -444,6 +467,8 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             result.Should().HaveCount(1);
             result.Should().BeEquivalentTo(expected);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
         }
 
         [Fact]
@@ -460,6 +485,8 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             result.Should().HaveCount(2);
             result.Should().BeEquivalentTo(expected);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
         }
 
         [Fact]
@@ -476,6 +503,8 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             result.Should().HaveCount(3);
             result.Should().BeEquivalentTo(expected);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
         }
 
         [Fact]
@@ -492,6 +521,26 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             result.Should().HaveCount(3);
             result.Should().BeEquivalentTo(expected);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
+        }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInThreePartsCorrectingTheFirst_WhenInputIsAListOfPercentages()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var listOfPercentages = new List<Percent>() { Percent.FromValue(33.33m), Percent.FromValue(33.33m), Percent.FromValue(33.33m) };
+            var expected = new List<Money>() { Money.Create(33.34m, Currency.BRL), Money.Create(33.33m, Currency.BRL), Money.Create(33.33m, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(listOfPercentages, false);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result[0].Should().Be(expected[0]);
+
+            result.Sum(r => r.Amount).Should().Be(100m);
         }
     }
 }

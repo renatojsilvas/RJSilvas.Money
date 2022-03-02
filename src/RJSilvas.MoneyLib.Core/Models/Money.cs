@@ -247,6 +247,9 @@ namespace RJSilvas.MoneyLib.Core
         /// <returns>A list od Moneys equally distributed</returns>
         public IList<Money> Allocate(int parts)
         {
+            if (parts < 1)
+               throw new AllocateMoneyException(parts);
+
             var partEquallyDivided = Money.Create(this.Amount * (1m / parts), this.Currency);
             var residual = this - parts * partEquallyDivided;
 

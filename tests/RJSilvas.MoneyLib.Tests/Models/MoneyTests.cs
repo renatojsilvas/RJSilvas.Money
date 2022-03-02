@@ -383,5 +383,51 @@ namespace RJSilvas.MoneyLib.Tests
             result.Should().HaveCount(3);
             result.Should().BeEquivalentTo(expected);
         }
+
+        [Fact]
+        public void Allocate_ShouldThrownAnException_WhenPartsIsZero()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            string expectedMessage = "Money cannot be allocated in 0 parts";
+            string actualMessage = string.Empty;
+
+            // Act
+            try
+            {
+                var result = _100BRL.Allocate(0);
+                Assert.True(false);
+            }
+            catch (AllocateMoneyException ex)
+            {
+                actualMessage = ex.Message;               
+            }
+
+            // Assert
+            actualMessage.Should().Be(expectedMessage);
+        }
+
+        [Fact]
+        public void Allocate_ShouldThrownAnException_WhenPartsIsNegative()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            string expectedMessage = "Money cannot be allocated in -1 parts";
+            string actualMessage = string.Empty;
+
+            // Act
+            try
+            {
+                var result = _100BRL.Allocate(-1);
+                Assert.True(false);
+            }
+            catch (AllocateMoneyException ex)
+            {
+                actualMessage = ex.Message;
+            }
+
+            // Assert
+            actualMessage.Should().Be(expectedMessage);
+        }
     }
 }

@@ -217,14 +217,35 @@ namespace RJSilvas.MoneyLib.Core
             return HashCode.Combine(Amount, Currency, DecimalPlaces);
         }
 
+        /// <summary>
+        /// Check money equality
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>True for equality</returns>
         public static bool operator ==(Money left, Money right)
         {
             return EqualityComparer<Money>.Default.Equals(left, right);
         }
 
+        /// <summary>
+        /// Check money non equality
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>True for non equality</returns>
         public static bool operator !=(Money left, Money right)
         {
             return !(left == right);
+        }
+
+        public IList<Money> Allocate(int parts)
+        {
+            if (parts == 3)
+                return new List<Money>() { Money.Create(33.33m, this.Currency), Money.Create(33.33m, this.Currency), Money.Create(33.34m, this.Currency) };
+            if (parts == 2)
+                return new List<Money>() { this * 0.5m, this * 0.5m };
+            return new List<Money>() { this };
         }
     }
 }

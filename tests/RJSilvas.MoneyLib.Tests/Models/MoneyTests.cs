@@ -338,5 +338,50 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             one_reais_1.GetHashCode().Should().NotBe(one_reais_2.GetHashCode());
         }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInNParts_WhenNIsEqual1()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var expected = new List<Money>() { Money.Create(100, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(1);
+
+            // Assert
+            result.Should().HaveCount(1);
+            result.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInNParts_WhenNIsEqual2()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var expected = new List<Money>() { Money.Create(50, Currency.BRL), Money.Create(50, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(2);
+
+            // Assert
+            result.Should().HaveCount(2);
+            result.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInNPartsCorrectingInTheLast_WhenNIsEqual3()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var expected = new List<Money>() { Money.Create(33.33m, Currency.BRL), Money.Create(33.33m, Currency.BRL), Money.Create(33.34m, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(3);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result.Should().BeEquivalentTo(expected);
+        }
     }
 }

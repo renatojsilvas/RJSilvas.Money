@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using RJSilvas.MoneyLib.Core;
+using System.Linq;
 using Xunit;
 
 namespace RJSilvas.MoneyLib.Tests
@@ -257,6 +258,135 @@ namespace RJSilvas.MoneyLib.Tests
 
             // Assert
             one_percent_1.GetHashCode().Should().NotBe(one_percent_2.GetHashCode());
+        }
+
+        [Fact]
+        public void AddOperator_ShouldAddTwoPercentValues()
+        {
+            // Arrange
+            var one_percent = Percent.FromValue(1);
+            var two_percent = Percent.FromValue(2);
+            var three_percent = Percent.FromValue(3);
+
+            // Act
+            var result = one_percent + two_percent;
+
+            // Assert
+            result.Should().Be(three_percent);
+        }
+
+        [Fact]
+        public void SubtractOperator_ShouldSubtractTwoPercentValues()
+        {
+            // Arrange
+            var one_percent = Percent.FromValue(1);
+            var two_percent = Percent.FromValue(2);
+            var three_percent = Percent.FromValue(3);
+
+            // Act
+            var result = three_percent - two_percent;
+
+            // Assert
+            result.Should().Be(one_percent);
+        }
+
+        [Fact]
+        public void MultiplyOperator_ShouldMultiplyAScalarByPercent()
+        {
+            // Arrange
+            var scalar = 2;
+            var two_percent = Percent.FromValue(2);
+            var four_percent = Percent.FromValue(4);
+
+            // Act
+            var result = scalar * two_percent;
+
+            // Assert
+            result.Should().Be(four_percent);
+        }
+
+        [Fact]
+        public void MultiplyOperator_ShouldMultiplyAPercentByScalar()
+        {
+            // Arrange
+            var scalar = 2;
+            var two_percent = Percent.FromValue(2);
+            var four_percent = Percent.FromValue(4);
+
+            // Act
+            var result = two_percent * scalar;
+
+            // Assert
+            result.Should().Be(four_percent);
+        }
+
+        [Fact]
+        public void Divide_ShouldReturnOneHundredPercent_WhenDivideOneHundredPercentBy1()
+        {
+            // Arrange
+            var one_hundred_percent = Percent.FromValue(100);
+
+            // Act
+            var result = one_hundred_percent.DivideBy(1);
+
+            // Assert
+            result.Should().HaveCount(1);
+            result[0].Should().Be(Percent.FromValue(100));
+
+            result.Sum(r => r.Percentage).Should().Be(100.0m);
+        }
+
+        [Fact]
+        public void Divide_ShouldReturnTwo50percent_WhenDivideOneHundredPercentBy2()
+        {
+            // Arrange
+            var one_hundred_percent = Percent.FromValue(100);
+
+            // Act
+            var result = one_hundred_percent.DivideBy(2);
+
+            // Assert
+            result.Should().HaveCount(2);
+            result[0].Should().Be(Percent.FromValue(50));
+            result[1].Should().Be(Percent.FromValue(50));
+
+            result.Sum(r => r.Percentage).Should().Be(100.0m);
+        }
+
+        [Fact]
+        public void Divide_ShouldReturnThree33_33percent_WhenDivideOneHundredPercentBy3()
+        {
+            // Arrange
+            var one_hundred_percent = Percent.FromValue(100);
+
+            // Act
+            var result = one_hundred_percent.DivideBy(3);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result[0].Should().Be(Percent.FromValue(33.33333m));
+            result[1].Should().Be(Percent.FromValue(33.33333m));
+            result[2].Should().Be(Percent.FromValue(33.33334m));
+
+            result.Sum(r => r.Percentage).Should().Be(100.0m);
+        }
+
+        [Fact]
+        public void Divide_ShouldReturnThree33_33percent_WhenDivideOneHundredPercentBy3With2decimals()
+        {
+            // Arrange
+            var one_hundred_percent = Percent.FromValue(100);
+
+            // Act
+            var result = one_hundred_percent.DivideBy(3, 2);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result[0].Should().Be(Percent.FromValue(33.33m));
+            result[1].Should().Be(Percent.FromValue(33.33m));
+            result[2].Should().Be(Percent.FromValue(33.34m));
+
+            result.Sum(r => r.Percentage).Should().Be(100.0m);
         }
     }
 }

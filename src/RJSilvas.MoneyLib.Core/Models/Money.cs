@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RJSilvas.MoneyLib.Core
 {
@@ -217,14 +218,74 @@ namespace RJSilvas.MoneyLib.Core
             return HashCode.Combine(Amount, Currency, DecimalPlaces);
         }
 
+        /// <summary>
+        /// Check money equality
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>True for equality</returns>
         public static bool operator ==(Money left, Money right)
         {
             return EqualityComparer<Money>.Default.Equals(left, right);
         }
 
+        /// <summary>
+        /// Check money non equality
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>True for non equality</returns>
         public static bool operator !=(Money left, Money right)
         {
             return !(left == right);
+        }
+
+        /// <summary>
+        /// Allocate money in parts equally distributed. By default,
+        /// the residual is added to the last element.
+        /// </summary>
+        /// <param name="parts"></param>
+        /// <param name="correctInTheLast"></param>
+        /// <returns>A list od Moneys equally distributed</returns>
+        public IList<Money> Allocate(int parts, bool correctInTheLast = true)
+        {
+            if (parts < 1)
+               throw new AllocateMoneyException(parts);
+
+            var partEquallyDivided = Money.Create(this.Amount * (1m / parts), this.Currency);
+            var residual = this - parts * partEquallyDivided;
+
+            List<Money> result = new();
+            for (int i = 0; i < parts; i++)
+            {
+                result.Add(partEquallyDivided);
+                if (!correctInTheLast && i == 0 || 
+                    correctInTheLast && i == parts - 1)
+                    result[i] += residual;
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Allocate money proportionally by a list of percentages. By default,
+        /// the residual is added to the last.
+        /// </summary>
+        /// <param name="listOfPercentage"></param>
+        /// <param name="correctInTheLast"></param>
+        /// <returns></returns>
+        public IList<Money> Allocate(IList<Percent> listOfPercentage, bool correctInTheLast = true)
+        {
+            var sum = Percent.FromValue(listOfPercentage.Sum(p => p.Percentage));
+            var residual = Percent.FromValue(100) - sum;
+
+            if (correctInTheLast)
+                listOfPercentage[listOfPercentage.Count - 1] += residual;
+            else
+                listOfPercentage[0] += residual;
+
+            return listOfPercentage.Select(p => this * p).ToList();
         }
     }
 }

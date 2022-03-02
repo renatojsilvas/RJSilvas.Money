@@ -21,7 +21,7 @@ namespace RJSilvas.MoneyLib.Core
         /// </summary>
         public static Currency BTC => new(true, false, "BTC", 8, "Bitcoin", "₿");
 
-        private RegionInfo regionInfo;
+        private readonly RegionInfo regionInfo;
 
         private Currency(bool isActive, bool isOfficialIso4217, uint? number, CultureInfo cultureInfo)
         {
@@ -47,7 +47,7 @@ namespace RJSilvas.MoneyLib.Core
 
             if (cultureInfo == null)
             {
-                CultureInfo ci = new CultureInfo("en-US");
+                CultureInfo ci = new("en-US");
                 ci.NumberFormat.CurrencySymbol = symbol;
                 CultureInfo = ci;
             }
@@ -112,7 +112,7 @@ namespace RJSilvas.MoneyLib.Core
 
         public override int GetHashCode()
         {
-            HashCode hash = new HashCode();
+            HashCode hash = new();
             hash.Add(Code);
             return hash.ToHashCode();
         }

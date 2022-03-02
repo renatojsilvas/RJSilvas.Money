@@ -239,13 +239,26 @@ namespace RJSilvas.MoneyLib.Core
             return !(left == right);
         }
 
+        /// <summary>
+        /// Allocate money in parts equally distributed. When it is impossible,
+        /// the residual is addedto the last element.
+        /// </summary>
+        /// <param name="parts"></param>
+        /// <returns>A list od Moneys equally distributed</returns>
         public IList<Money> Allocate(int parts)
         {
-            if (parts == 3)
-                return new List<Money>() { Money.Create(33.33m, this.Currency), Money.Create(33.33m, this.Currency), Money.Create(33.34m, this.Currency) };
-            if (parts == 2)
-                return new List<Money>() { this * 0.5m, this * 0.5m };
-            return new List<Money>() { this };
+            var partEquallyDivided = Money.Create(this.Amount * (1m / parts), this.Currency);
+            var residual = this - parts * partEquallyDivided;
+
+            List<Money> result = new();
+            for (int i = 0; i < parts; i++)
+            {
+                result.Add(partEquallyDivided);
+                if (i == parts - 1)
+                    result[i] += residual;
+            }
+
+            return result;
         }
     }
 }

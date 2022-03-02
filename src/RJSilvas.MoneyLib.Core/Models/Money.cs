@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RJSilvas.MoneyLib.Core
 {
@@ -262,6 +263,15 @@ namespace RJSilvas.MoneyLib.Core
             }
 
             return result;
+        }
+
+        public IList<Money> Allocate(IList<Percent> listOfPercentage)
+        {
+            var sum = Percent.FromValue(listOfPercentage.Sum(p => p.Percentage));
+            var residual = Percent.FromValue(100) - sum;
+            listOfPercentage[listOfPercentage.Count - 1] += residual;
+
+            return listOfPercentage.Select(p => this * p).ToList();
         }
     }
 }

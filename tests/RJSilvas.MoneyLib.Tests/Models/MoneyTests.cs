@@ -429,5 +429,69 @@ namespace RJSilvas.MoneyLib.Tests
             // Assert
             actualMessage.Should().Be(expectedMessage);
         }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInOnePart_WhenInputIsAListOfPercentages()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var listOfPercentages = new List<Percent>() { Percent.FromValue(100) };
+            var expected = new List<Money>() { Money.Create(100, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(listOfPercentages);
+
+            // Assert
+            result.Should().HaveCount(1);
+            result.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInTwoParts_WhenInputIsAListOfPercentages()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var listOfPercentages = new List<Percent>() { Percent.FromValue(50), Percent.FromValue(50) };
+            var expected = new List<Money>() { Money.Create(50, Currency.BRL), Money.Create(50, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(listOfPercentages);
+
+            // Assert
+            result.Should().HaveCount(2);
+            result.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInThreeParts_WhenInputIsAListOfPercentages()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var listOfPercentages = new List<Percent>() { Percent.FromValue(33.33m), Percent.FromValue(33.33m), Percent.FromValue(33.34m) };
+            var expected = new List<Money>() { Money.Create(33.33m, Currency.BRL), Money.Create(33.33m, Currency.BRL), Money.Create(33.34m, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(listOfPercentages);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void Allocate_ShouldDivide100BRLInThreePartsCorrectingTheLastByDefault_WhenInputIsAListOfPercentages()
+        {
+            // Arrange
+            var _100BRL = Money.Create(100, Currency.BRL);
+            var listOfPercentages = new List<Percent>() { Percent.FromValue(33.33m), Percent.FromValue(33.33m), Percent.FromValue(33.33m) };
+            var expected = new List<Money>() { Money.Create(33.33m, Currency.BRL), Money.Create(33.33m, Currency.BRL), Money.Create(33.34m, Currency.BRL) };
+
+            // Act
+            var result = _100BRL.Allocate(listOfPercentages);
+
+            // Assert
+            result.Should().HaveCount(3);
+            result.Should().BeEquivalentTo(expected);
+        }
     }
 }

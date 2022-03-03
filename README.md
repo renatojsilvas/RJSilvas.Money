@@ -20,7 +20,10 @@ Money library that encapsulates all money behaviour such as formatting, converti
 - Creating a money directly as Money.Reais(5), Money.Dollars(1) or Money.Bitcoins(10);
 - Formatting a money value to a string by .ToString(). The default culture is pt-BR for BRL, en-US for USD and BTC;
 - Rounding to the smallest quantity of the currency;
-- Doing arithmetic by + and - operations. Besides, it is possible to multiply a money quantity to a scalar.
+- Doing arithmetic by + and - operations. Besides, it is possible to multiply a money quantity to a scalar;
+- Doing equallity comparison between Money objects;
+- Allocate method. Splits a given amount in parts without losing the smallest quantity.
+- Percent class which represents the idea of percentage. It is possible to perform operations between Money and Percent.
 
 
 ## Usage
@@ -56,8 +59,22 @@ namespace RJSilvas.MoneyLib.Core.Sample
             // Multiply a money to scalar
             Console.WriteLine(two_reais * 2); // R$ 4,00
             
-            // Samallest quantity of the money
+            // Smallest quantity of the money
             Console.WriteLine(two_reais); // R$ 0,01
+            
+            // Allocate Money (correcting at enf by default)            
+            var _100BRL = Money.Create(100, Currency.BRL);                       
+            var correctAtEnd = _100BRL.Allocate(3); //new List<Money>() { Money.Create(33.33m, Currency.BRL), Money.Create(33.33m, Currency.BRL), Money.Create(33.34m, Currency.BRL) };
+            var correctAtEnd = _100BRL.Allocate(3, false); //new List<Money>() { Money.Create(33.34m, Currency.BRL), Money.Create(33.33m, Currency.BRL), Money.Create(33.33m, Currency.BRL) };
+            
+            // Percentage
+            var one_percent = Percent.FromValue(1); // 1%
+            var also_one_percent = Percent.FromFraction(0.01m); // 1%
+            var one_hundred_BRL = Money.Create(100, Currency.BRL) // R$ 100,00
+            Console.WriteLine(one_hundred_BRL * one_percent) // R$ 1,00
+            Console.WriteLine(one_hundred_BRL + one_percent) // R$ 101,00
+            Console.WriteLine(one_hundred_BRL - one_percent) // R$ 99,00
+            
         }
     }
 }
